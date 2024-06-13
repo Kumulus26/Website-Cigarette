@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <linkrel="stylesheet" href="css/style.css">
+    <title>Calculette de la depression</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Bienvenue sur mon site !</h1>
+        <p>J'ai crée ce site dans le but de m'améliorer en développement mais également de calculer combien d'argent tu as "perdu" en fumant</p>
+        <p>Je te laisse séléctionner via les différents menus, le type de cigarette que tu fumes, la marque et le nombre de cigarettes que tu fumes par jour</p>
+        
+            <h2>Quel type de cigarette fumes-tu ?</h2>
+            <form id="quizzForm">
+                <label>
+                    <input type="radio" id="question1" name="option1" value="option1" onclick="showDropdown('dropdown1')">Industrielle
+                </label>
+                <label>
+                    <input type="radio" id="question1" name="option2" value="option2" onclick="showDropdown('dropdown2')">Roulée
+                </label>
+
+            <div id="question2" style="display: none;">
+                <h2>Quelle marque de cigarette fumes-tu ?</h2>
+                <select id="dropdown1" class="dropdown" style="display: none;" onchange="showTextInput()">
+                    <option value="1A">Benson & Edges</option>
+                    <option value="1B">Camel Essential</option>
+                    <option value="1C">Camel Blue</option>
+                    <option value='1D'>Chesterfield</option>
+                    <option value='1E'>Gauloises</option>
+                    <option value='1F'>Gitanes</option>
+                    <option value='1G'>Malboro Red</option>
+                    <option value='1H'>Malboro Gold</option>
+                    <option value='1I'>Lucky Strike</option>
+                    <option value='1J'>Phillip Morris</option>
+                    <option value='1K'>Vogue</option>
+                    <option value='1L'>Winston</option>
+                </select>
+
+                <select id="dropdown2" class="dropdown" style="display: none;" onchange="showTextInput()">
+                    <option value="2A">Camel Essential</option>
+                    <option value="2B">Camel Jaune</option>
+                    <option value="2C">Fleur du Pays</option>
+                    <option value='2D'>Golden Virginia jaune</option>
+                    <option value='2E'>Golden Virginia original</option>
+                    <option value='2F'>Malboro gold</option>
+                    <option value='2G'>Malboro rouge</option>
+                    <option value='2H'>Pueblo</option>
+                    <option value='2I'>Winston blonde</option>
+                    <option value='2J'>Winston rouge</option>
+                    <option value="2K">1637</option>
+                </select>
+            </div>
+
+            <div id="question3" style="display: none;">
+                <h2>Combien de cigarettes fumes-tu par jour ?</h2>
+                <input type="text" id="quantity" name="quantity">
+                <input type="submit" value="Submit">
+            </div>
+        </form>
+
+    <script>
+        function showDropdown(dropdownId) {
+            // Cache toutes les listes déroulantes et la question 3
+            var dropdowns = document.getElementsByClassName('dropdown');
+            for (var i = 0; i < dropdowns.length; i++) {
+                dropdowns[i].style.display = 'none';
+            }
+            document.getElementById('question2').style.display = 'block';
+            document.getElementById('question3').style.display = 'none';
+
+            // Affiche la liste déroulante correspondante
+            document.getElementById(dropdownId).style.display = 'block';
+        }
+
+        function showTextInput() {
+            // Affiche la question 3
+            document.getElementById('question3').style.display = 'block';
+        }
+    </script>
+    </div>
+</body>
+</html>
