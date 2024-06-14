@@ -1,83 +1,150 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
     <meta charset="utf-8">
-    <linkrel="stylesheet" href="css/style.css">
-    <title>Calculette de la depression</title>
+    <link rel="stylesheet" href="css/style.css">
+    <title>Calculette de la dépense en Cigarettes</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 600px;
+            padding: 20px;
+        }
+
+        .dropdown-container {
+            text-align: left;
+            margin-bottom: 10px;
+        }
+
+        .dropdown {
+            width: 100%;
+            padding: 5px;
+            font-size: 16px;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <h1>Bienvenue sur mon site !</h1>
-        <p>J'ai crée ce site dans le but de m'améliorer en développement mais également de calculer combien d'argent tu as "perdu" en fumant</p>
-        <p>Je te laisse séléctionner via les différents menus, le type de cigarette que tu fumes, la marque et le nombre de cigarettes que tu fumes par jour</p>
+        <h1>How much I spent on cigarette ?</h1>
+        <p>J'ai créé ce site pour m'améliorer en développement et pour calculer combien d'argent tu as "perdu" en fumant.</p>
+        <p>Sélectionne le type de cigarette que tu fumes, la marque et le nombre de cigarettes que tu fumes par jour.</p>
         
+        <form id="quizzForm">
             <h2>Quel type de cigarette fumes-tu ?</h2>
-            <form id="quizzForm">
-                <label>
-                    <input type="radio" id="question1" name="option1" value="option1" onclick="showDropdown('dropdown1')">Industrielle
-                </label>
-                <label>
-                    <input type="radio" id="question1" name="option2" value="option2" onclick="showDropdown('dropdown2')">Roulée
-                </label>
+            <label>
+                <input type="radio" name="cigaretteType" value="Industrielle" onclick="showDropdown('dropdown1')"> Industrielle
+            </label>
+            <label>
+                <input type="radio" name="cigaretteType" value="Roulée" onclick="showDropdown('dropdown2')"> Roulée
+            </label>
 
             <div id="question2" style="display: none;">
                 <h2>Quelle marque de cigarette fumes-tu ?</h2>
                 <select id="dropdown1" class="dropdown" style="display: none;" onchange="showTextInput()">
-                    <option value="1A">Benson & Edges</option>
-                    <option value="1B">Camel Essential</option>
-                    <option value="1C">Camel Blue</option>
-                    <option value='1D'>Chesterfield</option>
-                    <option value='1E'>Gauloises</option>
-                    <option value='1F'>Gitanes</option>
-                    <option value='1G'>Malboro Red</option>
-                    <option value='1H'>Malboro Gold</option>
-                    <option value='1I'>Lucky Strike</option>
-                    <option value='1J'>Phillip Morris</option>
-                    <option value='1K'>Vogue</option>
-                    <option value='1L'>Winston</option>
+                    <option value="Benson & Edges">Benson & Edges</option>
+                    <option value="Camel Essential">Camel Essential</option>
+                    <option value="Camel Blue">Camel Blue</option>
+                    <option value='Chesterfield'>Chesterfield</option>
+                    <option value='Gauloises'>Gauloises</option>
+                    <option value='Gitanes'>Gitanes</option>
+                    <option value='Malboro Red'>Malboro Red</option>
+                    <option value='Malboro Gold'>Malboro Gold</option>
+                    <option value='Lucky Strike'>Lucky Strike</option>
+                    <option value='Phillip Morris'>Phillip Morris</option>
+                    <option value='Vogue'>Vogue</option>
+                    <option value='Winston'>Winston</option>
                 </select>
 
                 <select id="dropdown2" class="dropdown" style="display: none;" onchange="showTextInput()">
-                    <option value="2A">Camel Essential</option>
-                    <option value="2B">Camel Jaune</option>
-                    <option value="2C">Fleur du Pays</option>
-                    <option value='2D'>Golden Virginia jaune</option>
-                    <option value='2E'>Golden Virginia original</option>
-                    <option value='2F'>Malboro gold</option>
-                    <option value='2G'>Malboro rouge</option>
-                    <option value='2H'>Pueblo</option>
-                    <option value='2I'>Winston blonde</option>
-                    <option value='2J'>Winston rouge</option>
-                    <option value="2K">1637</option>
+                    <option value="Camel Essential">Camel Essential</option>
+                    <option value="Camel Jaune">Camel Jaune</option>
+                    <option value="Fleur du Pays">Fleur du Pays</option>
+                    <option value='Golden Virginia jaune'>Golden Virginia jaune</option>
+                    <option value='Golden Virginia original'>Golden Virginia original</option>
+                    <option value='Malboro'>Malboro</option>
+                    <option value='Pueblo'>Pueblo</option>
+                    <option value='Winston Blonde'>Winston Blonde</option>
+                    <option value='Winston Rouge'>Winston Rouge</option>
+                    <option value="1637">1637</option>
                 </select>
             </div>
 
             <div id="question3" style="display: none;">
                 <h2>Combien de cigarettes fumes-tu par jour ?</h2>
-                <input type="text" id="quantity" name="quantity">
-                <input type="submit" value="Submit">
+                <input type="number" id="quantity" name="quantity" min="1" required>
+                <input type="button" value="Calculer" onclick="calculateCost()">
             </div>
         </form>
 
+        <div id="results" style="display: none;">
+            <h2>Résultats*</h2>
+            <p id="dailyCost"></p>
+            <p id="weeklyCost"></p>
+            <p id="monthlyCost"></p>
+            <p id="yearlyCost"></p>
+            <p id="lifeCost"></p>
+            <br>
+            <br>
+            <p>*Les prix sont basés sur l'augmentation d'avril 2024</p>
+        </div>
+    </div>
+
     <script>
         function showDropdown(dropdownId) {
-            // Cache toutes les listes déroulantes et la question 3
             var dropdowns = document.getElementsByClassName('dropdown');
             for (var i = 0; i < dropdowns.length; i++) {
                 dropdowns[i].style.display = 'none';
             }
             document.getElementById('question2').style.display = 'block';
-            document.getElementById('question3').style.display = 'none';
-
-            // Affiche la liste déroulante correspondante
             document.getElementById(dropdownId).style.display = 'block';
         }
 
         function showTextInput() {
-            // Affiche la question 3
             document.getElementById('question3').style.display = 'block';
         }
+
+        async function calculateCost() {
+            const type = document.querySelector('input[name="cigaretteType"]:checked').value;
+
+            // Trouve le dropdown visible
+            const dropdown = Array.from(document.getElementsByClassName('dropdown')).find(el => el.style.display !== 'none');
+            if (!dropdown) {
+                alert("Veuillez sélectionner une marque de cigarette.");
+                return;
+            }
+            const brand = dropdown.value;
+            const quantity = document.getElementById('quantity').value;
+
+            const response = await fetch('calculate.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ type, brand, quantity })
+            });
+
+            const data = await response.json();
+
+            if (data.error) {
+                alert(data.error);
+            } else {
+                document.getElementById('dailyCost').textContent = `Coût journalier: ${data.dailyCost.toFixed(2)} €`;
+                document.getElementById('weeklyCost').textContent = `Coût hebdomadaire: ${data.weeklyCost.toFixed(2)} €`;
+                document.getElementById('monthlyCost').textContent = `Coût mensuel: ${data.monthlyCost.toFixed(2)} €`;
+                document.getElementById('yearlyCost').textContent = `Coût annuel: ${data.yearlyCost.toFixed(2)} €`;
+                document.getElementById('lifeCost').textContent = `Coût sur 50 ans: ${data.lifeCost.toFixed(2)} €`;
+
+                document.getElementById('results').style.display = 'block';
+            }
+        }
     </script>
-    </div>
 </body>
 </html>
